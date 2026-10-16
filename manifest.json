@@ -1,0 +1,11 @@
+{
+  "name": "MindSpace | Study Sanctuary",
+  "short_name": "MindSpace",
+  "description": "A peaceful space to plan, study and stay organized.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F7F5EF",
+  "theme_color": "#A8B5A0"
+}
