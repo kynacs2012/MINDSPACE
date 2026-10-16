@@ -1,0 +1,1199 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F8F4EC">
+<title>MindSpace | Study Sanctuary</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --sage:#748B78;
+  --green:#354B3D;
+  --cream:#F8F4EC;
+  --lavender:#EAE1EF;
+  --light-sage:#E7EDE2;
+  --text:#46564A;
+  --muted:#858B80;
+  --white:#FFFEFA;
+  --border:#E7E1D7;
+  --blush:#F0DDD7;
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  font-family:'DM Sans',sans-serif;
+  background:var(--cream);
+  color:var(--text);
+}
+
+button,input,textarea { font:inherit; }
+button { cursor:pointer; }
+
+.app-layout { display:flex; min-height:100vh; }
+
+.sidebar {
+  width:245px;
+  flex-shrink:0;
+  background:#E3E9DC;
+  padding:28px 18px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.logo {
+  font:700 27px 'Playfair Display',serif;
+  color:var(--green);
+  margin:0;
+}
+
+.sidebar-subtitle {
+  font-size:13px;
+  color:var(--muted);
+  margin:0 0 20px;
+}
+
+.sidebar nav {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.nav-button {
+  width:100%;
+  text-align:left;
+  padding:12px;
+  border:1px solid transparent;
+  border-radius:12px;
+  color:var(--text);
+  background:transparent;
+  transition:background .2s,transform .2s;
+}
+
+.nav-button:hover {
+  background:var(--cream);
+  transform:translateX(2px);
+}
+
+.nav-button.active {
+  background:var(--sage);
+  color:white;
+}
+
+.sidebar-note {
+  margin-top:auto;
+  padding:15px;
+  border-radius:14px;
+  background:var(--cream);
+  font-size:13px;
+  line-height:1.8;
+}
+
+.main-content {
+  flex:1;
+  min-width:0;
+  padding:30px;
+}
+
+.main-inner {
+  max-width:1100px;
+  margin:auto;
+}
+
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:25px;
+}
+
+.topbar h2 {
+  font:600 23px 'Playfair Display',serif;
+  color:var(--green);
+  margin:0;
+}
+
+.tag {
+  background:#E7E9DD;
+  padding:8px 12px;
+  border-radius:30px;
+  font-size:10px;
+  letter-spacing:1px;
+}
+
+.page-section { display:none; }
+
+.page-section.active-page {
+  display:block;
+  animation:appear .25s ease;
+}
+
+@keyframes appear {
+  from { opacity:0; transform:translateY(5px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.welcome {
+  background:linear-gradient(135deg,#E7EDE2,#F2EDE5);
+  border:1px solid #E2E5D9;
+  border-radius:22px;
+  padding:36px;
+  margin-bottom:20px;
+}
+
+.welcome small {
+  color:var(--sage);
+  font-weight:700;
+}
+
+.welcome h1 {
+  font:600 clamp(28px,4vw,42px)/1.2 'Playfair Display',serif;
+  color:var(--green);
+  margin:14px 0;
+}
+
+.welcome p {
+  color:#728073;
+  line-height:1.8;
+  margin-bottom:0;
+}
+
+.quote {
+  background:var(--lavender);
+  border:1px solid #E3D7E8;
+  border-radius:18px;
+  padding:22px;
+  margin-bottom:20px;
+  line-height:1.8;
+}
+
+.quote strong {
+  display:block;
+  font:600 19px 'Playfair Display',serif;
+  color:var(--green);
+  margin-bottom:5px;
+}
+
+.home-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+
+.card,.content-card {
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:0 5px 20px rgba(53,75,61,.045);
+}
+
+.card h2,.content-card h2 {
+  font:600 23px 'Playfair Display',serif;
+  color:var(--green);
+  margin-top:0;
+}
+
+.muted {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.8;
+}
+
+.tip {
+  background:linear-gradient(135deg,#EEE5F0,#F4E8E4);
+  border:1px solid #E6D9E8;
+  padding:23px;
+  border-radius:18px;
+  line-height:1.8;
+}
+
+.tip strong {
+  font:600 19px 'Playfair Display',serif;
+  color:var(--green);
+}
+
+.field {
+  display:block;
+  width:100%;
+  padding:12px;
+  margin:8px 0 15px;
+  border:1px solid #DDDCCF;
+  border-radius:10px;
+  background:var(--white);
+  color:var(--text);
+  outline:none;
+}
+
+.field:focus {
+  border-color:#8A9C86;
+  box-shadow:0 0 0 3px rgba(116,139,120,.12);
+}
+
+textarea.field { resize:vertical; }
+
+.primary-button {
+  padding:11px 17px;
+  background:var(--sage);
+  color:white;
+  border:0;
+  border-radius:10px;
+  font-weight:600;
+  transition:background .2s,transform .2s;
+}
+
+.primary-button:hover {
+  background:var(--green);
+  transform:translateY(-1px);
+}
+
+.secondary-button {
+  padding:8px 12px;
+  background:var(--light-sage);
+  color:var(--green);
+  border:0;
+  border-radius:8px;
+  margin:5px 5px 0 0;
+}
+
+.delete-button { background:#F0E4E9; }
+
+.auto-status {
+  color:var(--sage);
+  font-size:12px;
+  line-height:1.6;
+  margin:8px 0;
+}
+
+.task-list {
+  list-style:none;
+  padding:0;
+  margin-top:18px;
+}
+
+.task-item {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 0;
+  border-bottom:1px solid #EDF0E9;
+  overflow-wrap:anywhere;
+}
+
+.task-item span {
+  flex:1;
+  min-width:0;
+  line-height:1.6;
+}
+
+.task-item.completed span {
+  text-decoration:line-through;
+  color:#9BA396;
+}
+
+.task-item input[type="checkbox"] {
+  accent-color:var(--sage);
+  width:17px;
+  height:17px;
+  flex-shrink:0;
+}
+
+.empty-message {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.8;
+}
+
+.note-card {
+  background:#F7F4ED;
+  border:1px solid #EAE4D9;
+  padding:16px;
+  border-radius:13px;
+  margin-top:13px;
+  overflow-wrap:anywhere;
+}
+
+.note-card h3 {
+  color:var(--green);
+  font:600 19px 'Playfair Display',serif;
+  margin-top:0;
+}
+
+.note-content {
+  white-space:pre-wrap;
+  line-height:1.8;
+}
+
+.timetable-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px;
+}
+
+.day-card {
+  background:#F7F4ED;
+  border:1px solid #EAE4D9;
+  padding:14px;
+  border-radius:13px;
+}
+
+.day-card:nth-child(3n+2) { background:#EDF1E8; }
+.day-card:nth-child(3n) { background:#F0E8F2; }
+.day-card:nth-child(4n) { background:#F4E8E3; }
+
+.day-card h3 {
+  color:var(--green);
+  font:600 19px 'Playfair Display',serif;
+  margin:0 0 8px;
+}
+
+.day-card .field { margin-bottom:0; }
+
+.planner-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:13px;
+}
+
+.priority-card {
+  padding:16px;
+  background:#EDF1E8;
+  border:1px solid #DDE5D7;
+  border-radius:14px;
+}
+
+.priority-card:nth-child(2) {
+  background:#F0E8F2;
+  border-color:#E3D7E8;
+}
+
+.priority-card:nth-child(3) {
+  background:#F4E8E3;
+  border-color:#EBDCD5;
+}
+
+.priority-number {
+  color:var(--sage);
+  font-size:12px;
+  font-weight:700;
+}
+
+.planner-section-title {
+  font:600 20px 'Playfair Display',serif;
+  color:var(--green);
+  margin:25px 0 10px;
+}
+
+.reminder-meta {
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-top:4px;
+}
+
+footer {
+  text-align:center;
+  padding:28px 10px 8px;
+  color:#92958A;
+  font-size:12px;
+  letter-spacing:.3px;
+}
+
+@media(max-width:760px) {
+  .app-layout { flex-direction:column; }
+  .sidebar { width:100%; padding:20px; }
+  .sidebar-subtitle { margin-bottom:8px; }
+  .sidebar nav {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
+  }
+  .nav-button { padding:11px 9px; font-size:13px; }
+  .sidebar-note { display:none; }
+  .main-content { padding:17px; }
+  .topbar h2 { font-size:20px; }
+  .welcome { padding:24px; }
+  .home-grid,.timetable-grid,.planner-grid { grid-template-columns:1fr; }
+  .card,.content-card { padding:18px; }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation:none!important;
+    transition:none!important;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2 class="logo">🌿 MindSpace</h2>
+    <p class="sidebar-subtitle">Your study sanctuary</p>
+
+    <nav aria-label="Main navigation">
+      <button class="nav-button active" onclick="showSection('home',this)">🏡 Home</button>
+      <button class="nav-button" onclick="showSection('planner',this)">🌷 Daily Planner</button>
+      <button class="nav-button" onclick="showSection('tasks',this)">✓ My Tasks</button>
+      <button class="nav-button" onclick="showSection('notes',this)">✎ My Notes</button>
+      <button class="nav-button" onclick="showSection('timetable',this)">📅 Timetable</button>
+      <button class="nav-button" onclick="showSection('reminders',this)">🔔 Reminders</button>
+    </nav>
+
+    <div class="sidebar-note">
+      ♡ A little reminder
+      <p>One small step is still progress. Be gentle with yourself.</p>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+  <div class="main-inner">
+
+    <div class="topbar">
+      <h2>Your little corner of calm ♡</h2>
+      <span class="tag">GROW AT YOUR OWN PACE</span>
+    </div>
+
+    <!-- HOME -->
+    <section id="home" class="page-section active-page">
+      <div class="welcome">
+        <small>A fresh page, a fresh start</small>
+        <h1>Make room for growth. 🌷</h1>
+        <p>A gentle space to organise your studies, one little step at a time.</p>
+      </div>
+
+      <div class="quote">
+        <strong>“You don't have to do it all today.”</strong>
+        Little by little, your efforts add up. Take a breath and begin.
+      </div>
+
+      <div class="home-grid">
+        <div class="card">
+          <h2>A gentle reminder ☁</h2>
+          <p class="muted">Rest is productive, too. Make a plan that leaves room for breaks, hobbies, and yourself.</p>
+        </div>
+
+        <div class="tip">
+          <strong>✿ Today's tiny tip</strong>
+          <p>Start with just one task. Finishing it is a great way to build momentum.</p>
+          <button class="primary-button" onclick="openPage('planner')">Plan my day →</button>
+        </div>
+
+        <div class="card">
+          <h2>My little progress 🌱</h2>
+          <p id="homeTaskSummary" class="muted">Your tasks will appear here.</p>
+          <button class="secondary-button" onclick="openPage('tasks')">View my tasks →</button>
+        </div>
+
+        <div class="card">
+          <h2>Upcoming reminders 🔔</h2>
+          <p id="homeReminderSummary" class="muted">Your reminders will appear here.</p>
+          <button class="secondary-button" onclick="openPage('reminders')">View reminders →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAILY PLANNER -->
+    <section id="planner" class="page-section">
+      <div class="content-card">
+        <h2>My Daily Planner 🌷</h2>
+        <p class="muted">Choose a date and your entries save automatically.</p>
+
+        <label for="plannerDate">Planning date</label>
+        <input id="plannerDate" class="field" type="date">
+        <p id="plannerDateLabel" class="muted"></p>
+
+        <h3 class="planner-section-title">My top three priorities</h3>
+
+        <div class="planner-grid">
+          <div class="priority-card">
+            <span class="priority-number">PRIORITY 01</span>
+            <textarea id="priority1" class="field" rows="3" placeholder="My most important task..."></textarea>
+          </div>
+
+          <div class="priority-card">
+            <span class="priority-number">PRIORITY 02</span>
+            <textarea id="priority2" class="field" rows="3" placeholder="Another thing to do..."></textarea>
+          </div>
+
+          <div class="priority-card">
+            <span class="priority-number">PRIORITY 03</span>
+            <textarea id="priority3" class="field" rows="3" placeholder="One more little step..."></textarea>
+          </div>
+        </div>
+
+        <h3 class="planner-section-title">Today's study plan 📚</h3>
+        <textarea id="dailyStudy" class="field" rows="4" placeholder="Subjects, homework, revision..."></textarea>
+
+        <h3 class="planner-section-title">Breaks and self-care ☁</h3>
+        <textarea id="dailyBreaks" class="field" rows="3" placeholder="Remember to rest, stretch, have a snack..."></textarea>
+
+        <p id="plannerStatus" class="auto-status">Your plan saves automatically.</p>
+      </div>
+    </section>
+
+    <!-- TASKS -->
+    <section id="tasks" class="page-section">
+      <div class="content-card">
+        <h2>My Tasks ✓</h2>
+        <p class="muted">Add tasks and tick them off when they're done. Changes save automatically.</p>
+
+        <form id="taskForm">
+          <label for="taskInput">Your next little step</label>
+          <input id="taskInput" class="field" maxlength="120" placeholder="e.g. Revise science notes..." required>
+          <button class="primary-button" type="submit">+ Add a task</button>
+        </form>
+
+        <p id="taskCount" class="muted"></p>
+        <ul id="taskList" class="task-list"></ul>
+      </div>
+    </section>
+
+    <!-- NOTES -->
+    <section id="notes" class="page-section">
+      <div class="content-card">
+        <h2>My Notes ✎</h2>
+        <p class="muted">Your notes save automatically as you type.</p>
+
+        <label for="noteTitle">Note title</label>
+        <input id="noteTitle" class="field" maxlength="120" placeholder="e.g. Science revision">
+
+        <label for="noteText">Your notes</label>
+        <textarea id="noteText" class="field" rows="6" placeholder="Write your notes here..."></textarea>
+
+        <p id="noteMessage" class="auto-status">Your writing saves automatically.</p>
+        <button class="secondary-button" type="button" onclick="newNote()">+ Start a new note</button>
+
+        <h3 class="planner-section-title">Saved notes</h3>
+        <div id="savedNotes"></div>
+      </div>
+    </section>
+
+    <!-- WEEKLY TIMETABLE -->
+    <section id="timetable" class="page-section">
+      <div class="content-card">
+        <h2>My Weekly Timetable 📅</h2>
+        <p class="muted">Plan your week. Every change saves automatically.</p>
+
+        <div class="timetable-grid">
+          <div class="day-card"><h3>Monday</h3><textarea id="studyMonday" class="field" rows="4" placeholder="What will you study?"></textarea></div>
+          <div class="day-card"><h3>Tuesday</h3><textarea id="studyTuesday" class="field" rows="4" placeholder="What will you study?"></textarea></div>
+          <div class="day-card"><h3>Wednesday</h3><textarea id="studyWednesday" class="field" rows="4" placeholder="What will you study?"></textarea></div>
+          <div class="day-card"><h3>Thursday</h3><textarea id="studyThursday" class="field" rows="4" placeholder="What will you study?"></textarea></div>
+          <div class="day-card"><h3>Friday</h3><textarea id="studyFriday" class="field" rows="4" placeholder="What will you study?"></textarea></div>
+          <div class="day-card"><h3>Saturday</h3><textarea id="studySaturday" class="field" rows="4" placeholder="What will you study?"></textarea></div>
+          <div class="day-card"><h3>Sunday</h3><textarea id="studySunday" class="field" rows="4" placeholder="Rest, revise, or plan ahead"></textarea></div>
+        </div>
+
+        <p id="timetableMessage" class="auto-status">Your timetable saves automatically.</p>
+      </div>
+    </section>
+
+    <!-- REMINDERS -->
+    <section id="reminders" class="page-section">
+      <div class="content-card">
+        <h2>My Gentle Reminders 🔔</h2>
+        <p class="muted">Set a date and time for a little nudge to remember your study goals.</p>
+
+        <button id="enableNotificationsButton" type="button" class="primary-button" onclick="enableNotifications()">🔔 Enable Notifications</button>
+        <p id="notificationStatus" class="auto-status">Browser notifications need your permission.</p>
+
+        <form id="reminderForm">
+          <label for="reminderTitle">Reminder title</label>
+          <input id="reminderTitle" class="field" maxlength="100" placeholder="e.g. Revise Science chapter 4" required>
+
+          <label for="reminderDate">Reminder date</label>
+          <input id="reminderDate" class="field" type="date" required>
+
+          <label for="reminderTime">Reminder time</label>
+          <input id="reminderTime" class="field" type="time" required>
+
+          <button class="primary-button" type="submit">+ Set Reminder</button>
+        </form>
+
+        <h3 class="planner-section-title">Upcoming reminders ☁</h3>
+        <ul id="reminderList" class="task-list"></ul>
+      </div>
+    </section>
+
+    <footer>Made with care, just for your little study corner ♡</footer>
+  </div>
+  </main>
+</div>
+
+<script>
+"use strict";
+
+/* NAVIGATION */
+function showSection(id, button) {
+  document.querySelectorAll(".page-section").forEach(section => {
+    section.classList.remove("active-page");
+  });
+
+  document.getElementById(id).classList.add("active-page");
+
+  document.querySelectorAll(".nav-button").forEach(item => {
+    item.classList.remove("active");
+  });
+
+  if (button) {
+    button.classList.add("active");
+  } else {
+    document.querySelectorAll(".nav-button").forEach(item => {
+      const action = item.getAttribute("onclick") || "";
+      if (action.includes("'" + id + "'")) item.classList.add("active");
+    });
+  }
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function openPage(id) {
+  showSection(id);
+}
+
+/* STORAGE HELPERS */
+function readStore(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value === null ? fallback : JSON.parse(value);
+  } catch (error) {
+    return fallback;
+  }
+}
+
+function writeStore(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+/* TASKS */
+let tasks = readStore("mindspaceTasks", []);
+if (!Array.isArray(tasks)) tasks = [];
+
+tasks = tasks.map(task =>
+  typeof task === "string"
+    ? {id:Date.now().toString() + Math.random(),text:task,completed:false}
+    : task
+);
+
+function saveTasks() {
+  writeStore("mindspaceTasks", tasks);
+  updateHomeSummary();
+}
+
+function renderTasks() {
+  const list = document.getElementById("taskList");
+  list.replaceChildren();
+
+  const done = tasks.filter(task => task.completed).length;
+
+  document.getElementById("taskCount").textContent = tasks.length
+    ? done + " of " + tasks.length + " tasks completed"
+    : "Your list is ready for your first little step 🌱";
+
+  if (!tasks.length) {
+    const empty = document.createElement("li");
+    empty.className = "empty-message";
+    empty.textContent = "Your tasks will appear here when you add them.";
+    list.appendChild(empty);
+  }
+
+  tasks.forEach(task => {
+    const item = document.createElement("li");
+    item.className = "task-item" + (task.completed ? " completed" : "");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = !!task.completed;
+    checkbox.setAttribute("aria-label", "Mark task complete");
+
+    checkbox.addEventListener("change", () => {
+      task.completed = checkbox.checked;
+      saveTasks();
+      renderTasks();
+    });
+
+    const label = document.createElement("span");
+    label.textContent = task.text;
+
+    const del = document.createElement("button");
+    del.className = "secondary-button delete-button";
+    del.textContent = "Delete";
+
+    del.addEventListener("click", () => {
+      tasks = tasks.filter(current => current !== task);
+      saveTasks();
+      renderTasks();
+    });
+
+    item.append(checkbox,label,del);
+    list.appendChild(item);
+  });
+}
+
+document.getElementById("taskForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const input = document.getElementById("taskInput");
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  tasks.push({
+    id:Date.now().toString() + Math.random().toString(16).slice(2),
+    text:text,
+    completed:false
+  });
+
+  saveTasks();
+  renderTasks();
+  input.value = "";
+  input.focus();
+});
+
+/* NOTES */
+let mindspaceNotes = readStore("mindspaceNotes", []);
+if (!Array.isArray(mindspaceNotes)) mindspaceNotes = [];
+
+mindspaceNotes = mindspaceNotes.map((note,index) => ({
+  ...note,
+  id:note.id || "old-" + index + "-" + Date.now()
+}));
+
+let editingNoteId = null;
+let noteTimer = null;
+
+function persistNotes() {
+  writeStore("mindspaceNotes", mindspaceNotes);
+}
+
+function autoSaveNote() {
+  clearTimeout(noteTimer);
+
+  noteTimer = setTimeout(() => {
+    const title = document.getElementById("noteTitle").value;
+    const text = document.getElementById("noteText").value;
+    const message = document.getElementById("noteMessage");
+
+    if (!title.trim() && !text.trim()) {
+      message.textContent = "Your writing saves automatically.";
+      return;
+    }
+
+    if (editingNoteId === null) {
+      editingNoteId = Date.now().toString() + Math.random().toString(16).slice(2);
+      mindspaceNotes.unshift({id:editingNoteId,title,text});
+    } else {
+      const note = mindspaceNotes.find(item => item.id === editingNoteId);
+
+      if (note) {
+        note.title = title;
+        note.text = text;
+      } else {
+        mindspaceNotes.unshift({id:editingNoteId,title,text});
+      }
+    }
+
+    persistNotes();
+    showNotes();
+    message.textContent = "✓ Saved automatically";
+  },250);
+}
+
+document.getElementById("noteTitle").addEventListener("input",autoSaveNote);
+document.getElementById("noteText").addEventListener("input",autoSaveNote);
+
+function showNotes() {
+  const container = document.getElementById("savedNotes");
+  container.replaceChildren();
+
+  if (!mindspaceNotes.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty-message";
+    empty.textContent = "Your saved notes will appear here 🌷";
+    container.appendChild(empty);
+    return;
+  }
+
+  mindspaceNotes.forEach(note => {
+    const card = document.createElement("div");
+    card.className = "note-card";
+
+    const heading = document.createElement("h3");
+    heading.textContent = note.title || "Untitled note";
+
+    const content = document.createElement("p");
+    content.className = "note-content";
+    content.textContent = note.text || "";
+
+    const edit = document.createElement("button");
+    edit.className = "secondary-button";
+    edit.textContent = "Edit";
+
+    edit.addEventListener("click", () => {
+      clearTimeout(noteTimer);
+      editingNoteId = note.id;
+
+      document.getElementById("noteTitle").value = note.title || "";
+      document.getElementById("noteText").value = note.text || "";
+      document.getElementById("noteMessage").textContent =
+        "Editing note — changes save automatically.";
+
+      showSection("notes");
+      document.getElementById("noteTitle").focus();
+    });
+
+    const del = document.createElement("button");
+    del.className = "secondary-button delete-button";
+    del.textContent = "Delete";
+
+    del.addEventListener("click", () => {
+      mindspaceNotes = mindspaceNotes.filter(item => item.id !== note.id);
+
+      if (editingNoteId === note.id) newNote();
+
+      persistNotes();
+      showNotes();
+    });
+
+    card.append(heading,content,edit,del);
+    container.appendChild(card);
+  });
+}
+
+function newNote() {
+  clearTimeout(noteTimer);
+  editingNoteId = null;
+
+  document.getElementById("noteTitle").value = "";
+  document.getElementById("noteText").value = "";
+  document.getElementById("noteMessage").textContent =
+    "Ready for a new note. It will save as you type.";
+}
+
+/* DAILY PLANNER */
+const plannerFields = [
+  "priority1","priority2","priority3","dailyStudy","dailyBreaks"
+];
+
+const plannerDate = document.getElementById("plannerDate");
+
+function todayString() {
+  const now = new Date();
+
+  return now.getFullYear() + "-" +
+    String(now.getMonth()+1).padStart(2,"0") + "-" +
+    String(now.getDate()).padStart(2,"0");
+}
+
+function plannerStorageKey() {
+  return "mindspaceDailyPlanner-" + plannerDate.value;
+}
+
+function loadPlanner() {
+  const data = readStore(plannerStorageKey(), {});
+
+  plannerFields.forEach(id => {
+    document.getElementById(id).value = data[id] || "";
+  });
+
+  document.getElementById("plannerDateLabel").textContent =
+    "Your plan for " + plannerDate.value;
+
+  document.getElementById("plannerStatus").textContent =
+    "Your plan saves automatically.";
+}
+
+function savePlanner() {
+  const data = {};
+
+  plannerFields.forEach(id => {
+    data[id] = document.getElementById(id).value;
+  });
+
+  const saved = writeStore(plannerStorageKey(),data);
+
+  document.getElementById("plannerStatus").textContent = saved
+    ? "✓ Daily plan saved automatically"
+    : "Could not save. Check your browser storage settings.";
+}
+
+plannerFields.forEach(id => {
+  document.getElementById(id).addEventListener("input",savePlanner);
+});
+
+plannerDate.value = todayString();
+plannerDate.addEventListener("change",loadPlanner);
+loadPlanner();
+
+/* WEEKLY TIMETABLE */
+const timetableDays = [
+  "Monday","Tuesday","Wednesday","Thursday",
+  "Friday","Saturday","Sunday"
+];
+
+timetableDays.forEach(day => {
+  const field = document.getElementById("study" + day);
+
+  try {
+    field.value = localStorage.getItem("mindspaceTimetable" + day) || "";
+  } catch (error) {
+    field.value = "";
+  }
+
+  field.addEventListener("input",() => {
+    try {
+      localStorage.setItem("mindspaceTimetable" + day,field.value);
+
+      document.getElementById("timetableMessage").textContent =
+        "✓ Timetable saved automatically";
+    } catch (error) {
+      document.getElementById("timetableMessage").textContent =
+        "Could not save. Check your browser storage settings.";
+    }
+  });
+});
+
+/* REMINDERS */
+let reminders = readStore("mindspaceReminders", []);
+if (!Array.isArray(reminders)) reminders = [];
+
+reminders = reminders.map((reminder,index) => ({
+  id:reminder.id || "reminder-" + index + "-" + Date.now(),
+  title:reminder.title || "",
+  date:reminder.date || "",
+  time:reminder.time || "",
+  notified:!!reminder.notified
+}));
+
+function saveReminders() {
+  writeStore("mindspaceReminders",reminders);
+  updateHomeSummary();
+}
+
+function enableNotifications() {
+  const status = document.getElementById("notificationStatus");
+
+  if (!("Notification" in window)) {
+    status.textContent =
+      "This browser does not support notifications. Keep MindSpace open for reminders.";
+    return;
+  }
+
+  if (!window.isSecureContext) {
+    status.textContent =
+      "Notifications need a secure HTTPS page. Try an HTTPS-hosted version of MindSpace.";
+    return;
+  }
+
+  Notification.requestPermission().then(permission => {
+    if (permission === "granted") {
+      status.textContent = "✓ Notifications enabled in this browser.";
+
+      try {
+        new Notification("MindSpace 🌿", {
+          body:"Your study reminders are ready."
+        });
+      } catch (error) {
+        status.textContent =
+          "Permission granted, but this preview may limit notifications.";
+      }
+    } else {
+      status.textContent =
+        "Notifications are blocked. Allow them in your browser's site settings.";
+    }
+  }).catch(() => {
+    status.textContent =
+      "Could not request permission here. Try an HTTPS-hosted version.";
+  });
+}
+
+function reminderDateTime(reminder) {
+  return new Date(reminder.date + "T" + reminder.time).getTime();
+}
+
+function renderReminders() {
+  const list = document.getElementById("reminderList");
+  list.replaceChildren();
+
+  reminders.sort((a,b) => reminderDateTime(a) - reminderDateTime(b));
+
+  const upcoming = reminders.filter(reminder => !reminder.notified);
+
+  if (!reminders.length) {
+    const empty = document.createElement("li");
+    empty.className = "empty-message";
+    empty.textContent = "No reminders yet. Add one little goal 🌱";
+    list.appendChild(empty);
+  }
+
+  reminders.forEach(reminder => {
+    const item = document.createElement("li");
+    item.className = "task-item";
+
+    const wrapper = document.createElement("span");
+
+    const title = document.createElement("strong");
+    title.textContent = reminder.title;
+
+    const meta = document.createElement("small");
+    meta.className = "reminder-meta";
+    meta.textContent = reminder.date + " at " + reminder.time +
+      (reminder.notified ? " · Alert already triggered" : "");
+
+    wrapper.append(title,meta);
+
+    const del = document.createElement("button");
+    del.className = "secondary-button delete-button";
+    del.textContent = "Delete";
+    del.setAttribute("aria-label","Delete reminder " + reminder.title);
+
+    del.addEventListener("click",() => {
+      reminders = reminders.filter(item => item.id !== reminder.id);
+      saveReminders();
+      renderReminders();
+    });
+
+    item.append(wrapper,del);
+    list.appendChild(item);
+  });
+
+  document.getElementById("homeReminderSummary").textContent =
+    upcoming.length
+      ? upcoming.length + " upcoming reminder" +
+        (upcoming.length === 1 ? "" : "s") + " waiting for you."
+      : "No upcoming reminders. Enjoy your breathing room.";
+}
+
+document.getElementById("reminderDate").min = todayString();
+
+document.getElementById("reminderForm").addEventListener("submit",event => {
+  event.preventDefault();
+
+  const title = document.getElementById("reminderTitle").value.trim();
+  const date = document.getElementById("reminderDate").value;
+  const time = document.getElementById("reminderTime").value;
+
+  if (!title || !date || !time) return;
+
+  const scheduled = new Date(date + "T" + time).getTime();
+
+  if (!Number.isFinite(scheduled) || scheduled <= Date.now()) {
+    alert("Please choose a future date and time.");
+    return;
+  }
+
+  reminders.push({
+    id:Date.now().toString() + Math.random().toString(16).slice(2),
+    title:title,
+    date:date,
+    time:time,
+    notified:false
+  });
+
+  saveReminders();
+  renderReminders();
+  event.target.reset();
+
+  document.getElementById("reminderDate").min = todayString();
+
+  document.getElementById("notificationStatus").textContent =
+    "Reminder saved. Keep this page open for its alert. Background alerts need additional setup.";
+});
+
+function checkReminders() {
+  const now = Date.now();
+  let changed = false;
+
+  reminders.forEach(reminder => {
+    const scheduled = reminderDateTime(reminder);
+
+    if (
+      !reminder.notified &&
+      Number.isFinite(scheduled) &&
+      scheduled <= now
+    ) {
+      reminder.notified = true;
+      changed = true;
+
+      let delivered = false;
+
+      if (
+        "Notification" in window &&
+        Notification.permission === "granted"
+      ) {
+        try {
+          new Notification("MindSpace 🌿", {
+            body:reminder.title,
+            tag:reminder.id
+          });
+          delivered = true;
+        } catch (error) {
+          // Fall back to an in-page alert when possible.
+        }
+      }
+
+      if (!delivered && document.visibilityState === "visible") {
+        alert("Study reminder: " + reminder.title);
+      }
+    }
+  });
+
+  if (changed) {
+    saveReminders();
+    renderReminders();
+  }
+}
+
+document.addEventListener("visibilitychange",() => {
+  if (document.visibilityState === "visible") {
+    checkReminders();
+  }
+});
+
+renderReminders();
+checkReminders();
+setInterval(checkReminders,15000);
+
+/* HOME DASHBOARD */
+function updateHomeSummary() {
+  const done = tasks.filter(task => task.completed).length;
+
+  document.getElementById("homeTaskSummary").textContent = tasks.length
+    ? done + " of " + tasks.length +
+      " tasks completed. Every small step counts."
+    : "Your task list is waiting for your first little step.";
+
+  const upcoming = reminders.filter(reminder => !reminder.notified);
+
+  document.getElementById("homeReminderSummary").textContent = upcoming.length
+    ? upcoming.length + " upcoming reminder" +
+      (upcoming.length === 1 ? "" : "s") + " waiting for you."
+    : "No upcoming reminders. Enjoy your breathing room.";
+}
+
+/* INITIAL SETUP */
+renderTasks();
+persistNotes();
+showNotes();
+updateHomeSummary();
+</script>
+</body>
+</html>
